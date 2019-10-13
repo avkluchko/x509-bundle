@@ -2,6 +2,8 @@
 
 namespace AVKluchko\X509Bundle\Service;
 
+use AVKluchko\X509Bundle\Model\Certificate;
+
 class CertificateReader
 {
     public function readData(string $filename, bool $shortNames = false): array
@@ -23,10 +25,9 @@ class CertificateReader
         return $data;
     }
 
-    public function parseCertificate(string $filename): ?array
+    public function parseCertificate(string $filename): Certificate
     {
-        $data = $this->readData($filename);
-
+        return new Certificate($this->readData($filename));
     }
 
     public function loadFileContent(string $filename): string
