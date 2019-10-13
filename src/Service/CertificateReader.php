@@ -6,7 +6,7 @@ class CertificateReader
 {
     public function readData(string $filename, bool $shortNames = false): array
     {
-        $content = file_get_contents($filename);
+        $content = $this->loadFileContent($filename);
         $data = openssl_x509_parse($content, $shortNames);
 
         if ($data === false) {
@@ -15,19 +15,32 @@ class CertificateReader
         }
 
         if ($data === false) {
-            throw new \Exception('Could not parse certificate, unknown format');
+            throw new \Exception(printf('Could not parse certificate %s, unknown format', $filename));
         }
 
-        $data['thumbprint'] = openssl_x509_fingerprint($content);
+        $data['fingerprint'] = openssl_x509_fingerprint($content);
 
         return $data;
     }
 
-    private function convertToPemContent(string $content): string
+    public function parseCertificate(string $filename): ?array
+    {
+        $data = $this->readData($filename);
+
+    }
+
+    public function loadFileContent(string $filename): string
+    {
+        return file_get_contents($filename);
+    }
+
+
+    public function convertToPemContent(string $content): string
     {
         return
             '-----BEGIN CERTIFICATE-----' . PHP_EOL
             . chunk_split(base64_encode($content), 64, PHP_EOL)
             . '-----END CERTIFICATE-----' . PHP_EOL;
     }
+
 }
