@@ -9,9 +9,10 @@ class CertificateReaderTest extends TestCase
 {
     public function testReadCertificate()
     {
-        $certificateReader = new CertificateReader(__DIR__ . '/../../temp/FSS_TEST_CERT_2020.cer');
+        $reader = new CertificateReader();
 
-        var_dump($certificateReader->getData());
+        $data = $reader->readData(__DIR__ . '/../../temp/FSS_TEST_CERT_2020.cer');
+        var_dump($data);
 
         $this->assertEquals(42,42);
     }

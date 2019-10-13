@@ -4,22 +4,9 @@ namespace AVKluchko\X509Bundle\Service;
 
 class CertificateReader
 {
-    private $data = null;
-
-    public function __construct(string $filename, bool $shortNames = false)
+    public function readData(string $filename, bool $shortNames = false): array
     {
         $content = file_get_contents($filename);
-
-        $this->data = $this->readData($content, $shortNames);
-    }
-
-    public function getData(): ?array
-    {
-        return $this->data;
-    }
-
-    private function readData(string $content, bool $shortNames = false): array
-    {
         $data = openssl_x509_parse($content, $shortNames);
 
         if ($data === false) {
