@@ -6,7 +6,7 @@ use AVKluchko\X509Bundle\Model\Certificate;
 
 class CertificateReader
 {
-    public function readData(string $filename, bool $shortNames = false): array
+    public function loadData(string $filename, bool $shortNames = false): array
     {
         $content = $this->loadFileContent($filename);
         $data = openssl_x509_parse($content, $shortNames);
@@ -25,9 +25,9 @@ class CertificateReader
         return $data;
     }
 
-    public function parseCertificate(string $filename): Certificate
+    public function loadCertificate(string $filename): Certificate
     {
-        return new Certificate($this->readData($filename));
+        return new Certificate($this->loadData($filename));
     }
 
     public function loadFileContent(string $filename): string

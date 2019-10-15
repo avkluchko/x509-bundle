@@ -9,11 +9,19 @@ class CertificateReaderTest extends TestCase
 {
     public function testReadCertificate()
     {
-//        $reader = new CertificateReader();
-//        $data = $reader->readData(__DIR__ . '/../../temp/x509_cert.cer');
-//        var_dump($data);
-//
-//        $this->assertArrayHasKey('thumbprint', $data);
+        $reader = new CertificateReader();
+
+        $data = $reader->loadData(__DIR__ . '/../example/ivanov_crypto_2001_der.cer');
+
+        $this->assertArrayHasKey('subject', $data);
+        $this->assertArrayHasKey('issuer', $data);
+        $this->assertArrayHasKey('fingerprint', $data);
+
+        $data = $reader->loadData(__DIR__ . '/../example/ivanov_crypto_2001_base64.cer');
+
+        $this->assertArrayHasKey('subject', $data);
+        $this->assertArrayHasKey('issuer', $data);
+        $this->assertArrayHasKey('fingerprint', $data);
     }
 
 

@@ -23,4 +23,4 @@ composer require avkluchko/x509-bundle
 
 If you're *not* using Symfony Flex, you'll also
 need to enable the `AVKluchko\X509Bundle\X509Bundle`
-in your `AppKernel.php` file
+in your `AppKernel.php` file.
