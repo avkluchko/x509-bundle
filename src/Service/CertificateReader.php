@@ -8,7 +8,7 @@ class CertificateReader
 {
     public function loadData(string $filename, bool $shortNames = false): array
     {
-        $content = $this->loadFileContent($filename);
+        $content = file_get_contents($filename);
         $data = openssl_x509_parse($content, $shortNames);
 
         if ($data === false) {
@@ -30,13 +30,7 @@ class CertificateReader
         return new Certificate($this->loadData($filename));
     }
 
-    public function loadFileContent(string $filename): string
-    {
-        return file_get_contents($filename);
-    }
-
-
-    public function convertToPemContent(string $content): string
+    private function convertToPemContent(string $content): string
     {
         return
             '-----BEGIN CERTIFICATE-----' . PHP_EOL
