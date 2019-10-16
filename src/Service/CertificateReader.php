@@ -2,8 +2,6 @@
 
 namespace AVKluchko\X509Bundle\Service;
 
-use AVKluchko\X509Bundle\Model\Certificate;
-
 class CertificateReader
 {
     public function loadData(string $filename, bool $shortNames = false): array
@@ -23,11 +21,6 @@ class CertificateReader
         $data['fingerprint'] = openssl_x509_fingerprint($content);
 
         return $data;
-    }
-
-    public function loadCertificate(string $filename): Certificate
-    {
-        return new Certificate($this->loadData($filename));
     }
 
     private function convertToPemContent(string $content): string

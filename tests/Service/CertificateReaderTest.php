@@ -33,16 +33,4 @@ class CertificateReaderTest extends TestCase
         $this->assertArrayHasKey('issuer', $data);
         $this->assertArrayHasKey('fingerprint', $data);
     }
-
-    public function testLoadCertificate()
-    {
-        $certificate = $this->reader->loadCertificate(__DIR__ . '/../example/ivanov_crypto_2001_base64.cer');
-
-        $this->assertIsArray($certificate->getCertificateData());
-        $this->assertNotEmpty($certificate->getFingerprint());
-        $this->assertNull($certificate->getSignTool());
-        $this->assertArrayHasKey('name', $certificate->getIssuer());
-        $this->assertArrayHasKey('shortName', $certificate->getIssuer());
-        $this->assertArrayHasKey('PSRN', $certificate->getIssuer());
-    }
 }
