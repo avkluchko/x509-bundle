@@ -15,24 +15,58 @@ class ParserTest extends TestCase
         $this->parser = new Parser(new CertificateReader());
     }
 
-    public function testParse()
+    /**
+     * @dataProvider getCertificatePaths
+     */
+    public function testParse(string $path)
     {
-        $parsedData = $this->parser->parse(__DIR__ . '/../example/ivanov_crypto_2001_base64.cer');
-//        $parsedData = $this->parser->parse(__DIR__ . '/../temp/official2.cer');
+        $parsedData = $this->parser->parse(__DIR__ . $path);
 
         $this->assertIsArray($parsedData['data']);
         $this->assertNotEmpty($parsedData['fingerprint']);
         $this->assertArrayHasKey('signTool', $parsedData);
-        $this->assertArrayHasKey('commonName', $parsedData['issuer']);
+
+        // asserts subject
+        $this->assertArrayHasKey('type', $parsedData['subject']);
+        $this->assertArrayHasKey('shortName', $parsedData['subject']);
+        $this->assertArrayHasKey('company', $parsedData['subject']);
+        $this->assertArrayHasKey('title', $parsedData['subject']);
+        $this->assertArrayHasKey('country', $parsedData['subject']);
+        $this->assertArrayHasKey('state', $parsedData['subject']);
+        $this->assertArrayHasKey('locality', $parsedData['subject']);
+        $this->assertArrayHasKey('address', $parsedData['subject']);
+        $this->assertArrayHasKey('email', $parsedData['subject']);
+        $this->assertArrayHasKey('OGRN', $parsedData['subject']);
+        $this->assertArrayHasKey('INN', $parsedData['subject']);
+        $this->assertArrayHasKey('surname', $parsedData['subject']);
+        $this->assertArrayHasKey('name', $parsedData['subject']);
+        $this->assertArrayHasKey('middleName', $parsedData['subject']);
+        $this->assertArrayHasKey('SNILS', $parsedData['subject']);
+
+        // asserts issuer
         $this->assertArrayHasKey('name', $parsedData['issuer']);
+        $this->assertArrayHasKey('shortName', $parsedData['issuer']);
         $this->assertArrayHasKey('unitName', $parsedData['issuer']);
         $this->assertArrayHasKey('country', $parsedData['issuer']);
         $this->assertArrayHasKey('state', $parsedData['issuer']);
         $this->assertArrayHasKey('locality', $parsedData['issuer']);
         $this->assertArrayHasKey('address', $parsedData['issuer']);
         $this->assertArrayHasKey('email', $parsedData['issuer']);
-        $this->assertArrayHasKey('PSRN', $parsedData['issuer']);
-        $this->assertArrayHasKey('TIN', $parsedData['issuer']);
+        $this->assertArrayHasKey('OGRN', $parsedData['issuer']);
+        $this->assertArrayHasKey('INN', $parsedData['issuer']);
 
+    }
+
+    public function getCertificatePaths()
+    {
+        return [
+            ['/../example/ivanov_crypto_2001_base64.cer'],
+            ['/../example/ivanov_crypto_2001_der.cer'],
+            ['/../temp/official1.cer'],
+            ['/../temp/official2.cer'],
+            ['/../temp/person1.cer'],
+            ['/../temp/person2.cer'],
+            ['/../temp/company.cer'],
+        ];
     }
 }
