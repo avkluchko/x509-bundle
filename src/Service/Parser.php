@@ -6,9 +6,9 @@ use AVKluchko\GovernmentBundle\Validator\PSRNValidator;
 
 class Parser
 {
-    const SUBJECT_COMPANY = 'company';
-    const SUBJECT_OFFICIAL = 'official';
-    const SUBJECT_PERSON = 'person';
+    public const SUBJECT_COMPANY = 'company';
+    public const SUBJECT_OFFICIAL = 'official';
+    public const SUBJECT_PERSON = 'person';
 
     private $reader;
 
@@ -21,13 +21,25 @@ class Parser
     {
         $data = $this->reader->loadData($filename);
 
+
+//        $validTo = new \DateTime(strtotime($data['validTo']));
+//        var_dump($validTo);
+//
+//        $validFromTime = new \DateTime(strtotime($data['validFrom_time_t']));
+//        var_dump($validFromTime);
+//        $validToTime = new \DateTime(strtotime($data['validTo_time_t']));
+//        var_dump($validToTime);
+
         return [
             'data' => $data,
             'fingerprint' => $data['fingerprint'],
-            'subject' => $this->parseSubject($data['subject']),
-            'issuer' => $this->parseIssuer($data['issuer']),
+            'validFrom' => new \DateTime(date('Y-m-d H:i:s', $data['validFrom_time_t'])),
+            'validTo' => new \DateTime(date('Y-m-d H:i:s', $data['validTo_time_t'])),
             'signTool' => isset($data['extensions']) ?
                 $this->parseSignTool($data['extensions']) : null,
+
+            'subject' => $this->parseSubject($data['subject']),
+            'issuer' => $this->parseIssuer($data['issuer']),
         ];
     }
 
@@ -51,19 +63,19 @@ class Parser
             'type' => $type,
             'shortName' => $data['commonName'],
             'company' => $data['organizationName'],
-            'title' => $data['title'] ?? null, // optional
+            'title' => $data['title'] ?? null,
             'country' => $data['countryName'],
             'state' => $data['stateOrProvinceName'],
             'locality' => $data['localityName'],
-            'address' => $data['streetAddress'] ?? null, // optional
+            'address' => $data['streetAddress'] ?? null,
             'email' => isset($data['emailAddress']) ?
                 $this->parseEmail($data['emailAddress']) : null,
             'OGRN' => $OGRN,
-            'INN' => $data['INN'] ?? null, // optional
-            'surname' => $data['surname'] ?? null, // optional
+            'INN' => $data['INN'] ?? null,
+            'surname' => $data['surname'] ?? null,
             'name' => $personName,
             'middleName' => $personMiddleName,
-            'SNILS' => $data['SNILS'] ?? null, // optional
+            'SNILS' => $data['SNILS'] ?? null,
         ];
     }
 
@@ -81,14 +93,14 @@ class Parser
         return [
             'name' => $data['organizationName'],
             'shortName' => $data['commonName'],
-            'unitName' => $data['organizationalUnitName'] ?? null, // optional
+            'unitName' => $data['organizationalUnitName'] ?? null,
             'country' => $data['countryName'],
-            'state' => $data['stateOrProvinceName'] ?? null, // optional
+            'state' => $data['stateOrProvinceName'] ?? null,
             'locality' => $data['localityName'],
-            'address' => $data['streetAddress'] ?? null, // optional
+            'address' => $data['streetAddress'] ?? null,
             'email' => $data['emailAddress'] ?? null,
-            'OGRN' => $data['OGRN'] ?? null, // optional
-            'INN' => $data['INN'] ?? null, // optional
+            'OGRN' => $data['OGRN'] ?? null,
+            'INN' => $data['INN'] ?? null,
         ];
     }
 

@@ -20,40 +20,43 @@ class ParserTest extends TestCase
      */
     public function testParse(string $path)
     {
-        $parsedData = $this->parser->parse(__DIR__ . $path);
+        $data = $this->parser->parse(__DIR__ . $path);
+        var_dump($data);
 
-        $this->assertIsArray($parsedData['data']);
-        $this->assertNotEmpty($parsedData['fingerprint']);
-        $this->assertArrayHasKey('signTool', $parsedData);
+        $this->assertIsArray($data['data']);
+        $this->assertNotEmpty($data['fingerprint']);
+        $this->assertNotNull($data['validFrom']);
+        $this->assertNotNull($data['validTo']);
+        $this->assertArrayHasKey('signTool', $data);
 
         // asserts subject
-        $this->assertArrayHasKey('type', $parsedData['subject']);
-        $this->assertArrayHasKey('shortName', $parsedData['subject']);
-        $this->assertArrayHasKey('company', $parsedData['subject']);
-        $this->assertArrayHasKey('title', $parsedData['subject']);
-        $this->assertArrayHasKey('country', $parsedData['subject']);
-        $this->assertArrayHasKey('state', $parsedData['subject']);
-        $this->assertArrayHasKey('locality', $parsedData['subject']);
-        $this->assertArrayHasKey('address', $parsedData['subject']);
-        $this->assertArrayHasKey('email', $parsedData['subject']);
-        $this->assertArrayHasKey('OGRN', $parsedData['subject']);
-        $this->assertArrayHasKey('INN', $parsedData['subject']);
-        $this->assertArrayHasKey('surname', $parsedData['subject']);
-        $this->assertArrayHasKey('name', $parsedData['subject']);
-        $this->assertArrayHasKey('middleName', $parsedData['subject']);
-        $this->assertArrayHasKey('SNILS', $parsedData['subject']);
+        $this->assertArrayHasKey('type', $data['subject']);
+        $this->assertArrayHasKey('shortName', $data['subject']);
+        $this->assertArrayHasKey('company', $data['subject']);
+        $this->assertArrayHasKey('title', $data['subject']);
+        $this->assertArrayHasKey('country', $data['subject']);
+        $this->assertArrayHasKey('state', $data['subject']);
+        $this->assertArrayHasKey('locality', $data['subject']);
+        $this->assertArrayHasKey('address', $data['subject']);
+        $this->assertArrayHasKey('email', $data['subject']);
+        $this->assertArrayHasKey('OGRN', $data['subject']);
+        $this->assertArrayHasKey('INN', $data['subject']);
+        $this->assertArrayHasKey('surname', $data['subject']);
+        $this->assertArrayHasKey('name', $data['subject']);
+        $this->assertArrayHasKey('middleName', $data['subject']);
+        $this->assertArrayHasKey('SNILS', $data['subject']);
 
         // asserts issuer
-        $this->assertArrayHasKey('name', $parsedData['issuer']);
-        $this->assertArrayHasKey('shortName', $parsedData['issuer']);
-        $this->assertArrayHasKey('unitName', $parsedData['issuer']);
-        $this->assertArrayHasKey('country', $parsedData['issuer']);
-        $this->assertArrayHasKey('state', $parsedData['issuer']);
-        $this->assertArrayHasKey('locality', $parsedData['issuer']);
-        $this->assertArrayHasKey('address', $parsedData['issuer']);
-        $this->assertArrayHasKey('email', $parsedData['issuer']);
-        $this->assertArrayHasKey('OGRN', $parsedData['issuer']);
-        $this->assertArrayHasKey('INN', $parsedData['issuer']);
+        $this->assertArrayHasKey('name', $data['issuer']);
+        $this->assertArrayHasKey('shortName', $data['issuer']);
+        $this->assertArrayHasKey('unitName', $data['issuer']);
+        $this->assertArrayHasKey('country', $data['issuer']);
+        $this->assertArrayHasKey('state', $data['issuer']);
+        $this->assertArrayHasKey('locality', $data['issuer']);
+        $this->assertArrayHasKey('address', $data['issuer']);
+        $this->assertArrayHasKey('email', $data['issuer']);
+        $this->assertArrayHasKey('OGRN', $data['issuer']);
+        $this->assertArrayHasKey('INN', $data['issuer']);
 
     }
 
