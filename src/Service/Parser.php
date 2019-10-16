@@ -16,7 +16,7 @@ class Parser
     public function parse(string $filename): array
     {
         $data = $this->reader->loadData($filename);
-
+        
         return [
             'data' => $data,
             'fingerprint' => $data['fingerprint'],
@@ -41,30 +41,37 @@ class Parser
     private function parseIssuer(array $data): array
     {
         return [
-            'shortName' => $data['commonName'],
+            'commonName' => $data['commonName'],
             'name' => $data['organizationName'],
-            'PSRN' => $this->parsePSRN($data),
+            'unitName' => $data['organizationalUnitName'] ?? null, // optional
+            'country' => $data['countryName'],
+            'state' => $data['stateOrProvinceName'] ?? null, // optional
+            'locality' => $data['localityName'],
+            'address' => $data['streetAddress'] ?? null, // optional
+            'email' => $data['emailAddress'],
+            'PSRN' => $data['OGRN'] ?? null, // optional
+            'TIN' => $data['INN'] ?? null, // optional
         ];
     }
 
-    private function parsePSRN(array $data): ?string
-    {
-        // if use OpenSSL 1.1
-        if (isset($data['OGRN'])) {
-            return $data['OGRN'];
-        }
-
-        // if use older OpenSSL 1.0
-        if (isset($data['undefined'])) {
-            $validator = new PSRNValidator();
-
-            foreach ($data['undefined'] as $value) {
-                if ($validator->isValid($value)) {
-                    return $value;
-                }
-            }
-        }
-
-        return null;
-    }
+//    private function parsePSRN(array $data): ?string
+//    {
+//        // if use OpenSSL 1.1
+//        if (isset($data['OGRN'])) {
+//            return $data['OGRN'];
+//        }
+//
+//        // if use older OpenSSL 1.0
+//        if (isset($data['undefined'])) {
+//            $validator = new PSRNValidator();
+//
+//            foreach ($data['undefined'] as $value) {
+//                if ($validator->isValid($value)) {
+//                    return $value;
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 }

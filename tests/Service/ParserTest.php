@@ -18,12 +18,21 @@ class ParserTest extends TestCase
     public function testParse()
     {
         $parsedData = $this->parser->parse(__DIR__ . '/../example/ivanov_crypto_2001_base64.cer');
+//        $parsedData = $this->parser->parse(__DIR__ . '/../temp/official2.cer');
 
         $this->assertIsArray($parsedData['data']);
         $this->assertNotEmpty($parsedData['fingerprint']);
-        $this->assertNull($parsedData['signTool']);
+        $this->assertArrayHasKey('signTool', $parsedData);
+        $this->assertArrayHasKey('commonName', $parsedData['issuer']);
         $this->assertArrayHasKey('name', $parsedData['issuer']);
-        $this->assertArrayHasKey('shortName', $parsedData['issuer']);
+        $this->assertArrayHasKey('unitName', $parsedData['issuer']);
+        $this->assertArrayHasKey('country', $parsedData['issuer']);
+        $this->assertArrayHasKey('state', $parsedData['issuer']);
+        $this->assertArrayHasKey('locality', $parsedData['issuer']);
+        $this->assertArrayHasKey('address', $parsedData['issuer']);
+        $this->assertArrayHasKey('email', $parsedData['issuer']);
         $this->assertArrayHasKey('PSRN', $parsedData['issuer']);
+        $this->assertArrayHasKey('TIN', $parsedData['issuer']);
+
     }
 }
