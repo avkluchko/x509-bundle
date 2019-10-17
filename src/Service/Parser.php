@@ -21,25 +21,51 @@ class Parser
     {
         $data = $this->reader->loadData($filename);
 
-
-//        $validTo = new \DateTime(strtotime($data['validTo']));
-//        var_dump($validTo);
-//
-//        $validFromTime = new \DateTime(strtotime($data['validFrom_time_t']));
-//        var_dump($validFromTime);
-//        $validToTime = new \DateTime(strtotime($data['validTo_time_t']));
-//        var_dump($validToTime);
-
         return [
             'data' => $data,
             'fingerprint' => $data['fingerprint'],
-            'validFrom' => new \DateTime(date('Y-m-d H:i:s', $data['validFrom_time_t'])),
-            'validTo' => new \DateTime(date('Y-m-d H:i:s', $data['validTo_time_t'])),
+            'validPeriod' => [
+                'from' => $this->parseValidDate($data['validFrom_time_t']),
+                'to' => $this->parseValidDate($data['validTo_time_t'])
+            ],
+            'privateKeyUsagePeriod' => $this->parsePrivateKeyUsagePeriod($data),
             'signTool' => isset($data['extensions']) ?
                 $this->parseSignTool($data['extensions']) : null,
-
             'subject' => $this->parseSubject($data['subject']),
             'issuer' => $this->parseIssuer($data['issuer']),
+        ];
+    }
+
+    private function parseValidDate(string $datetime): \DateTime
+    {
+        return new \DateTime(date('Y-m-d H:i:s', $datetime));
+    }
+
+    private function parsePrivateKeyUsagePeriod(array $data): ?array
+    {
+        if (!isset($data['extensions'])) {
+            return null;
+        }
+
+        $extensions = $data['extensions'];
+        if(!isset($extensions['privateKeyUsagePeriod'])) {
+            return null;
+        }
+
+        // example: Not Before: Jun 10 06:27:34 2019 GMT, Not After: Jun 10 06:05:54 2020 GMT
+        preg_match(
+            '/^Not Before: (.*), Not After: (.*)$/',
+            trim($extensions['privateKeyUsagePeriod']),
+            $period
+        );
+
+        $from = new \DateTime($period[1]);
+        $to = new \DateTime($period[2]);
+        $tz = new \DateTimeZone(date_default_timezone_get());
+
+        return [
+            'from' => $from->setTimezone($tz),
+            'to' => $to->setTimezone($tz)
         ];
     }
 

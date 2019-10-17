@@ -21,13 +21,14 @@ class ParserTest extends TestCase
     public function testParse(string $path)
     {
         $data = $this->parser->parse(__DIR__ . $path);
-        var_dump($data);
 
         $this->assertIsArray($data['data']);
         $this->assertNotEmpty($data['fingerprint']);
-        $this->assertNotNull($data['validFrom']);
-        $this->assertNotNull($data['validTo']);
         $this->assertArrayHasKey('signTool', $data);
+
+        $this->assertNotNull($data['validPeriod']['from']);
+        $this->assertNotNull($data['validPeriod']['to']);
+        $this->assertArrayHasKey('privateKeyUsagePeriod', $data);
 
         // asserts subject
         $this->assertArrayHasKey('type', $data['subject']);
@@ -57,7 +58,6 @@ class ParserTest extends TestCase
         $this->assertArrayHasKey('email', $data['issuer']);
         $this->assertArrayHasKey('OGRN', $data['issuer']);
         $this->assertArrayHasKey('INN', $data['issuer']);
-
     }
 
     public function getCertificatePaths()
