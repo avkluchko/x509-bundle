@@ -66,11 +66,11 @@ class ParserTest extends TestCase
         return [
             ['/../example/ivanov_crypto_2001_base64.cer'],
             ['/../example/ivanov_crypto_2001_der.cer'],
-            ['/../temp/official1.cer'],
-            ['/../temp/official2.cer'],
-            ['/../temp/person1.cer'],
-            ['/../temp/person2.cer'],
-            ['/../temp/company.cer'],
+//            ['/../temp/official1.cer'],
+//            ['/../temp/official2.cer'],
+//            ['/../temp/person1.cer'],
+//            ['/../temp/person2.cer'],
+//            ['/../temp/company.cer'],
         ];
     }
 }
