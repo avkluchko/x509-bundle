@@ -25,6 +25,7 @@ class ParserTest extends TestCase
         $this->assertIsArray($data['data']);
         $this->assertNotEmpty($data['fingerprint']);
         $this->assertArrayHasKey('signTool', $data);
+        $this->assertArrayHasKey('extendedKeyUsage', $data);
 
         $this->assertNotNull($data['validPeriod']['from']);
         $this->assertNotNull($data['validPeriod']['to']);

@@ -28,11 +28,11 @@ class Parser
                 'from' => $this->parseValidDate($data['validFrom_time_t']),
                 'to' => $this->parseValidDate($data['validTo_time_t'])
             ],
-            'privateKeyUsagePeriod' => $this->parsePrivateKeyUsagePeriod($data),
-            'signTool' => isset($data['extensions']) ?
-                $this->parseSignTool($data['extensions']) : null,
             'subject' => $this->parseSubject($data['subject']),
             'issuer' => $this->parseIssuer($data['issuer']),
+            'privateKeyUsagePeriod' => $this->parsePrivateKeyUsagePeriod($data['extensions']),
+            'signTool' => $this->parseSignTool($data['extensions']),
+            'extendedKeyUsage' => $this->parseExtendedKeyUsage($data['extensions']),
         ];
     }
 
@@ -43,19 +43,14 @@ class Parser
 
     private function parsePrivateKeyUsagePeriod(array $data): ?array
     {
-        if (!isset($data['extensions'])) {
-            return null;
-        }
-
-        $extensions = $data['extensions'];
-        if(!isset($extensions['privateKeyUsagePeriod'])) {
+        if(!isset($data['privateKeyUsagePeriod'])) {
             return null;
         }
 
         // example: Not Before: Jun 10 06:27:34 2019 GMT, Not After: Jun 10 06:05:54 2020 GMT
         preg_match(
             '/^Not Before: (.*), Not After: (.*)$/',
-            trim($extensions['privateKeyUsagePeriod']),
+            trim($data['privateKeyUsagePeriod']),
             $period
         );
 
@@ -161,5 +156,14 @@ class Parser
         }
 
         return null;
+    }
+
+    private function parseExtendedKeyUsage(array $data): ?array
+    {
+        if (!isset($data['extendedKeyUsage'])) {
+            return null;
+        }
+
+        return explode(', ', $data['extendedKeyUsage']);
     }
 }
