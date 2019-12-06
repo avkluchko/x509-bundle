@@ -4,13 +4,23 @@ namespace AVKluchko\X509Bundle\Service;
 
 class CertificateReader
 {
+    private const BEGIN_CERTIFICATE = '-----BEGIN CERTIFICATE-----' . PHP_EOL;
+    private const END_CERTIFICATE = '-----END CERTIFICATE-----' . PHP_EOL;
+
     public function loadData(string $filename, bool $shortNames = false): array
     {
-        $content = file_get_contents($filename);
+        $fileContent = file_get_contents($filename);
+
+        $content = $fileContent;
         $data = openssl_x509_parse($content, $shortNames);
 
         if ($data === false) {
-            $content = $this->convertToPemContent($content);
+            $content = self::BEGIN_CERTIFICATE . $fileContent . PHP_EOL . self::END_CERTIFICATE;
+            $data = openssl_x509_parse($content, $shortNames);
+        }
+
+        if ($data === false) {
+            $content = $this->convertToPemContent($fileContent);
             $data = openssl_x509_parse($content, $shortNames);
         }
 
@@ -26,9 +36,9 @@ class CertificateReader
     private function convertToPemContent(string $content): string
     {
         return
-            '-----BEGIN CERTIFICATE-----' . PHP_EOL
-            . chunk_split(base64_encode($content), 64, PHP_EOL)
-            . '-----END CERTIFICATE-----' . PHP_EOL;
+            self::BEGIN_CERTIFICATE .
+            chunk_split(base64_encode($content), 64, PHP_EOL) .
+            self::END_CERTIFICATE;
     }
 
 }
