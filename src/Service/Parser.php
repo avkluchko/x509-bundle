@@ -120,7 +120,7 @@ class Parser
             'locality' => $data['localityName'],
             'address' => $data['streetAddress'] ?? null,
             'email' => $data['emailAddress'] ?? null,
-            'OGRN' => $data['OGRN'] ?? null,
+            'OGRN' => $this->parsePSRN($data),
             'INN' => $data['INN'] ?? null,
         ];
     }
