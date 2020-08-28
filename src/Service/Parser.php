@@ -2,7 +2,7 @@
 
 namespace AVKluchko\X509Bundle\Service;
 
-use AVKluchko\GovernmentBundle\Validator\PSRNValidator;
+use AVKluchko\GovernmentBundle\Validator\OGRNValidator;
 use AVKluchko\X509Bundle\Utils\DateUtils;
 
 class Parser
@@ -62,7 +62,7 @@ class Parser
 
     private function parseSubject(array $data): array
     {
-        $OGRN = $this->parsePSRN($data);
+        $OGRN = $this->parseOGRN($data);
 
         $type = self::SUBJECT_COMPANY;
         if (isset($data['givenName'])) {
@@ -116,7 +116,7 @@ class Parser
             'locality' => $data['localityName'],
             'address' => $data['streetAddress'] ?? null,
             'email' => $data['emailAddress'] ?? null,
-            'OGRN' => $this->parsePSRN($data),
+            'OGRN' => $this->parseOGRN($data),
             'INN' => $data['INN'] ?? null,
         ];
     }
@@ -133,7 +133,7 @@ class Parser
         return trim($signTool, " +\x00..\x1F");
     }
 
-    public function parsePSRN(array $data): ?string
+    public function parseOGRN(array $data): ?string
     {
         // if use OpenSSL 1.1
         if (isset($data['OGRN'])) {
@@ -142,7 +142,7 @@ class Parser
 
         // if use older OpenSSL 1.0
         if (isset($data['undefined'])) {
-            $validator = new PSRNValidator();
+            $validator = new OGRNValidator();
 
             foreach ($data['undefined'] as $value) {
                 if ($validator->isValid($value)) {

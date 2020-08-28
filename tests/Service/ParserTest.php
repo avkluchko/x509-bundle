@@ -69,14 +69,14 @@ class ParserTest extends TestCase
 
     public function testParsePSNR(): void
     {
-        self::assertEquals('1047797019830', $this->parser->parsePSRN(['OGRN' =>'1047797019830']));
+        self::assertEquals('1047797019830', $this->parser->parseOGRN(['OGRN' => '1047797019830']));
 
-        self::assertEquals('1047797019830', $this->parser->parsePSRN([
-            'undefined' =>['one value', '1047797019830', '323232323']
+        self::assertEquals('1047797019830', $this->parser->parseOGRN([
+            'undefined' => ['one value', '1047797019830', '323232323']
         ]));
 
-        self::assertNull($this->parser->parsePSRN([]));
-        self::assertNull($this->parser->parsePSRN(['undefined' =>['one value', 'second', '323232323']]));
+        self::assertNull($this->parser->parseOGRN([]));
+        self::assertNull($this->parser->parseOGRN(['undefined' => ['one value', 'second', '323232323']]));
     }
 
     /**
