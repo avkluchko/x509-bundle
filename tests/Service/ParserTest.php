@@ -49,6 +49,36 @@ class ParserTest extends TestCase
         ]));
     }
 
+    public function testParseExtendedKeyUsage(): void
+    {
+        self::assertNull($this->parser->parseExtendedKeyUsage([]));
+
+        $result = $this->parser->parseExtendedKeyUsage([
+            'extendedKeyUsage' => 'TLS Web Client Authentication, E-mail Protection, 1.2.643.2.1.6.8.5, 1.2.643.3.61.502710.1.6.3.2, 1.2.643.3.251.1.1, 1.2.643.3.251.3, 1.2.643.3.251.5.1, 1.2.643.3.251.6'
+        ]);
+        self::assertIsArray($result);
+        self::assertEquals('TLS Web Client Authentication', $result[0]);
+        self::assertEquals('1.2.643.3.251.6', $result[7]);
+    }
+
+    public function testParseEmail(): void
+    {
+        self::assertEquals('test@email.com', $this->parser->parseEmail('test@email.com'));
+        self::assertEquals('new@email.com', $this->parser->parseEmail(['test@email.com', 'new@email.com']));
+    }
+
+    public function testParsePSNR(): void
+    {
+        self::assertEquals('1047797019830', $this->parser->parsePSRN(['OGRN' =>'1047797019830']));
+
+        self::assertEquals('1047797019830', $this->parser->parsePSRN([
+            'undefined' =>['one value', '1047797019830', '323232323']
+        ]));
+
+        self::assertNull($this->parser->parsePSRN([]));
+        self::assertNull($this->parser->parsePSRN(['undefined' =>['one value', 'second', '323232323']]));
+    }
+
     /**
      * @dataProvider getCertificatePaths
      *

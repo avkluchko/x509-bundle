@@ -43,8 +43,7 @@ class CertificateReaderTest extends TestCase
 //    {
 //        $data = $this->reader->loadData(__DIR__ . $path);
 //
-//        var_dump($data['extensions']['subjectSignTool']);
-//        var_dump($data['extensions']['1.2.643.100.111']);
+//        var_dump($data['undefined']);
 //
 //        self::assertNotNull($data);
 //    }

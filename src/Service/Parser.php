@@ -96,7 +96,7 @@ class Parser
         ];
     }
 
-    private function parseEmail($email): string
+    public function parseEmail($email): string
     {
         if (is_array($email)) {
             return $email[count($email) - 1];
@@ -133,7 +133,7 @@ class Parser
         return trim($signTool, " +\x00..\x1F");
     }
 
-    private function parsePSRN(array $data): ?string
+    public function parsePSRN(array $data): ?string
     {
         // if use OpenSSL 1.1
         if (isset($data['OGRN'])) {
@@ -154,7 +154,7 @@ class Parser
         return null;
     }
 
-    private function parseExtendedKeyUsage(array $data): ?array
+    public function parseExtendedKeyUsage(array $data): ?array
     {
         if (!isset($data['extendedKeyUsage'])) {
             return null;
