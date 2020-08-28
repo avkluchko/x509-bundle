@@ -143,10 +143,12 @@ class ParserTest extends TestCase
         self::assertArrayHasKey('email', $data['subject']);
         self::assertArrayHasKey('OGRN', $data['subject']);
         self::assertArrayHasKey('INN', $data['subject']);
+        self::assertArrayHasKey('SNILS', $data['subject']);
         self::assertArrayHasKey('surname', $data['subject']);
         self::assertArrayHasKey('name', $data['subject']);
         self::assertArrayHasKey('middleName', $data['subject']);
-        self::assertArrayHasKey('SNILS', $data['subject']);
+
+        var_dump($data['subject']);
 
         // asserts issuer
         self::assertArrayHasKey('name', $data['issuer']);

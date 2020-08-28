@@ -90,11 +90,11 @@ class Parser
             'email' => isset($data['emailAddress']) ?
                 $this->parseEmail($data['emailAddress']) : null,
             'OGRN' => $OGRN,
-            'INN' => $data['INN'] ?? null,
+            'INN' => $this->parseINN($data),
+            'SNILS' => $this->parseSNILS($data),
             'surname' => $data['surname'] ?? null,
             'name' => $personName,
             'middleName' => $personMiddleName,
-            'SNILS' => $data['SNILS'] ?? null,
         ];
     }
 
@@ -119,7 +119,7 @@ class Parser
             'address' => $data['streetAddress'] ?? null,
             'email' => $data['emailAddress'] ?? null,
             'OGRN' => $this->parseOGRN($data),
-            'INN' => $this->parseINN($data),
+            'INN' => $data['INN'] ?? null,
         ];
     }
 
