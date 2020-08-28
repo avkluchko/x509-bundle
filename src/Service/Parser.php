@@ -2,7 +2,9 @@
 
 namespace AVKluchko\X509Bundle\Service;
 
+use AVKluchko\GovernmentBundle\Validator\INNValidator;
 use AVKluchko\GovernmentBundle\Validator\OGRNValidator;
+use AVKluchko\GovernmentBundle\Validator\SNILSValidator;
 use AVKluchko\X509Bundle\Utils\DateUtils;
 
 class Parser
@@ -26,7 +28,7 @@ class Parser
             'data' => $data,
             'fingerprint' => $data['fingerprint'],
             'validPeriod' => [
-                'from' =>  DateUtils::timeToDatetime($data['validFrom_time_t']),
+                'from' => DateUtils::timeToDatetime($data['validFrom_time_t']),
                 'to' => DateUtils::timeToDatetime($data['validTo_time_t'])
             ],
             'subject' => $this->parseSubject($data['subject']),
@@ -39,7 +41,7 @@ class Parser
 
     public function parsePrivateKeyUsagePeriod(array $extensions): ?array
     {
-        if(!isset($extensions['privateKeyUsagePeriod'])) {
+        if (!isset($extensions['privateKeyUsagePeriod'])) {
             return null;
         }
 
@@ -117,7 +119,7 @@ class Parser
             'address' => $data['streetAddress'] ?? null,
             'email' => $data['emailAddress'] ?? null,
             'OGRN' => $this->parseOGRN($data),
-            'INN' => $data['INN'] ?? null,
+            'INN' => $this->parseINN($data),
         ];
     }
 
@@ -131,6 +133,59 @@ class Parser
         }
 
         return trim($signTool, " +\x00..\x1F");
+    }
+
+    public function parseINN(array $data): ?string
+    {
+        // if use OpenSSL 1.1
+        if (isset($data['INN'])) {
+            return $data['INN'];
+        }
+
+        // if use older OpenSSL 1.0
+        if (isset($data['undefined'])) {
+            $validator = new INNValidator();
+
+            foreach ($data['undefined'] as $value) {
+                if ($validator->isValid($value)) {
+                    return $value;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public function parseSNILS(array $data): ?string
+    {
+        $SNILS = $this->getSNILS($data);
+
+        if (!$SNILS) {
+            return null;
+        }
+
+        return str_replace(['-', ' '], '', $SNILS);
+    }
+
+    public function getSNILS(array $data): ?string
+    {
+        // if use OpenSSL 1.1
+        if (isset($data['SNILS'])) {
+            return $data['SNILS'];
+        }
+
+        // if use older OpenSSL 1.0
+        if (isset($data['undefined'])) {
+            $validator = new SNILSValidator();
+
+            foreach ($data['undefined'] as $value) {
+                if ($validator->isValid($value)) {
+                    return $value;
+                }
+            }
+        }
+
+        return null;
     }
 
     public function parseOGRN(array $data): ?string

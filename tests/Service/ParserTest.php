@@ -72,11 +72,45 @@ class ParserTest extends TestCase
         self::assertEquals('1047797019830', $this->parser->parseOGRN(['OGRN' => '1047797019830']));
 
         self::assertEquals('1047797019830', $this->parser->parseOGRN([
-            'undefined' => ['one value', '1047797019830', '323232323']
+            'undefined' => ['one value', '12345678983', '164400537302', '1047797019830', '1145678578']
         ]));
 
         self::assertNull($this->parser->parseOGRN([]));
-        self::assertNull($this->parser->parseOGRN(['undefined' => ['one value', 'second', '323232323']]));
+        self::assertNull($this->parser->parseOGRN(['undefined' => ['one value', '1145678578', '12345678983']]));
+    }
+
+    public function testParseINN(): void
+    {
+        self::assertEquals('1145678578', $this->parser->parseINN(['INN' => '1145678578']));
+        self::assertEquals('164400537302', $this->parser->parseINN(['INN' => '164400537302']));
+
+        self::assertEquals('1145678578', $this->parser->parseINN([
+            'undefined' => ['one value', '1047797019830', '1145678578']
+        ]));
+
+        self::assertEquals('164400537302', $this->parser->parseINN([
+            'undefined' => ['one value', '12345678983', '164400537302', '1047797019830']
+        ]));
+
+        self::assertNull($this->parser->parseINN([]));
+        self::assertNull($this->parser->parseINN(['undefined' => ['one value', '12345678983', '1047797019830']]));
+    }
+
+    public function testParseSNILS(): void
+    {
+        self::assertEquals('12345678983', $this->parser->parseSNILS(['SNILS' => '12345678983']));
+        self::assertEquals('12345678983', $this->parser->parseSNILS(['SNILS' => '123-456-789 83']));
+
+        self::assertEquals('12345678983', $this->parser->parseSNILS([
+            'undefined' => ['one value', '1047797019830', '1145678578', '12345678983']
+        ]));
+
+        self::assertEquals('12345678983', $this->parser->parseSNILS([
+            'undefined' => ['one value', '164400537302', '1047797019830', '123-456-789 83']
+        ]));
+
+        self::assertNull($this->parser->parseSNILS([]));
+        self::assertNull($this->parser->parseSNILS(['undefined' => ['one value', '164400537302', '1047797019830']]));
     }
 
     /**
