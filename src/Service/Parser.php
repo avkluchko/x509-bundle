@@ -3,6 +3,7 @@
 namespace AVKluchko\X509Bundle\Service;
 
 use AVKluchko\GovernmentBundle\Validator\PSRNValidator;
+use AVKluchko\X509Bundle\Utils\DateUtils;
 
 class Parser
 {
@@ -25,8 +26,8 @@ class Parser
             'data' => $data,
             'fingerprint' => $data['fingerprint'],
             'validPeriod' => [
-                'from' => $this->parseValidDate($data['validFrom_time_t']),
-                'to' => $this->parseValidDate($data['validTo_time_t'])
+                'from' =>  DateUtils::timeToDatetime($data['validFrom_time_t']),
+                'to' => DateUtils::timeToDatetime($data['validTo_time_t'])
             ],
             'subject' => $this->parseSubject($data['subject']),
             'issuer' => $this->parseIssuer($data['issuer']),
@@ -36,21 +37,16 @@ class Parser
         ];
     }
 
-    private function parseValidDate(string $datetime): \DateTime
+    public function parsePrivateKeyUsagePeriod(array $extensions): ?array
     {
-        return new \DateTime(date('Y-m-d H:i:s', $datetime));
-    }
-
-    private function parsePrivateKeyUsagePeriod(array $data): ?array
-    {
-        if(!isset($data['privateKeyUsagePeriod'])) {
+        if(!isset($extensions['privateKeyUsagePeriod'])) {
             return null;
         }
 
         // example: Not Before: Jun 10 06:27:34 2019 GMT, Not After: Jun 10 06:05:54 2020 GMT
         preg_match(
             '/^Not Before: (.*), Not After: (.*)$/',
-            trim($data['privateKeyUsagePeriod']),
+            trim($extensions['privateKeyUsagePeriod']),
             $period
         );
 
@@ -125,7 +121,7 @@ class Parser
         ];
     }
 
-    private function parseSignTool(array $data): ?string
+    public function parseSignTool(array $data): ?string
     {
         $signTool = $data['subjectSignTool'] ??
             $data['1.2.643.100.111'] ?? null;

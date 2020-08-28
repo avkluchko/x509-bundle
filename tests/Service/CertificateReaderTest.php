@@ -14,23 +14,53 @@ class CertificateReaderTest extends TestCase
         $this->reader = new CertificateReader();
     }
 
-    public function testLoadData()
+    public function testLoadData(): void
     {
         // load normal x509 certificate file
         $data = $this->reader->loadData(__DIR__ . '/../example/ivanov_crypto_2001_base64.cer');
 
-        $this->assertArrayHasKey('subject', $data);
-        $this->assertArrayHasKey('issuer', $data);
-        $this->assertArrayHasKey('fingerprint', $data);
+        self::assertArrayHasKey('subject', $data);
+        self::assertArrayHasKey('issuer', $data);
+        self::assertArrayHasKey('fingerprint', $data);
     }
 
-    public function testLoadDataDERFile()
+    public function testLoadDataDERFile(): void
     {
         // load certificate in DER file
         $data = $this->reader->loadData(__DIR__ . '/../example/ivanov_crypto_2001_der.cer');
 
-        $this->assertArrayHasKey('subject', $data);
-        $this->assertArrayHasKey('issuer', $data);
-        $this->assertArrayHasKey('fingerprint', $data);
+        self::assertArrayHasKey('subject', $data);
+        self::assertArrayHasKey('issuer', $data);
+        self::assertArrayHasKey('fingerprint', $data);
     }
+
+//    /**
+//     * @dataProvider getCertificatePaths
+//     *
+//     * @param string $path
+//     */
+//    public function testLoadData_Values(string $path): void
+//    {
+//        $data = $this->reader->loadData(__DIR__ . $path);
+//
+//        var_dump($data['extensions']['subjectSignTool']);
+//        var_dump($data['extensions']['1.2.643.100.111']);
+//
+//        self::assertNotNull($data);
+//    }
+//
+//    public function getCertificatePaths(): array
+//    {
+//        return [
+//            ['/../example/ivanov_crypto_2001_base64.cer'],
+//            ['/../example/ivanov_crypto_2001_der.cer'],
+//            ['/../temp/official1.cer'],
+//            ['/../temp/official2.cer'],
+//            ['/../temp/person1.cer'],
+//            ['/../temp/person2.cer'],
+//            ['/../temp/person3.cer'],
+//            ['/../temp/company.cer'],
+//            ['/../temp/company2.cer'],
+//        ];
+//    }
 }
