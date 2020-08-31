@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+    php-fpm-gost:
+        build:
+            context: ./docker
+            dockerfile: php-fpm-gost.docker
+        environment:
+            COMPOSER_MEMORY_LIMIT: -1
+        volumes:
+            - ./:/app:delegated
+            - composer:/root/.composer/cache
+
+volumes:
+    composer:
