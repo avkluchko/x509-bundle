@@ -12,6 +12,7 @@ class ParserTest extends TestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('Europe/Moscow');
         $this->parser = new Parser(new CertificateReader());
     }
 
@@ -23,15 +24,15 @@ class ParserTest extends TestCase
             'privateKeyUsagePeriod' => 'Not Before: Jun 10 06:27:34 2019 GMT, Not After: Jun 10 06:05:54 2020 GMT'
         ]);
 
-        self::assertEquals('2019-06-10 11:27:34', $result['from']->format('Y-m-d H:i:s'));
-        self::assertEquals('2020-06-10 11:05:54', $result['to']->format('Y-m-d H:i:s'));
+        self::assertEquals('2019-06-10 09:27:34', $result['from']->format('Y-m-d H:i:s'));
+        self::assertEquals('2020-06-10 09:05:54', $result['to']->format('Y-m-d H:i:s'));
 
         $result = $this->parser->parsePrivateKeyUsagePeriod([
             'privateKeyUsagePeriod' => 'Not Before: May 28 09:25:22 2020 GMT, Not After: Aug 28 09:25:22 2021 GMT'
         ]);
 
-        self::assertEquals('2020-05-28 14:25:22', $result['from']->format('Y-m-d H:i:s'));
-        self::assertEquals('2021-08-28 14:25:22', $result['to']->format('Y-m-d H:i:s'));
+        self::assertEquals('2020-05-28 12:25:22', $result['from']->format('Y-m-d H:i:s'));
+        self::assertEquals('2021-08-28 12:25:22', $result['to']->format('Y-m-d H:i:s'));
     }
 
     public function testParseSignTool(): void
@@ -148,8 +149,6 @@ class ParserTest extends TestCase
         self::assertArrayHasKey('name', $data['subject']);
         self::assertArrayHasKey('middleName', $data['subject']);
 
-        var_dump($data['subject']);
-
         // asserts issuer
         self::assertArrayHasKey('name', $data['issuer']);
         self::assertArrayHasKey('shortName', $data['issuer']);
@@ -166,12 +165,12 @@ class ParserTest extends TestCase
     public function getCertificatePaths(): array
     {
         return [
-//            ['/../example/ivanov_crypto_2001_base64.cer'],
-//            ['/../example/ivanov_crypto_2001_der.cer'],
+            ['/../example/ivanov_crypto_2001_base64.cer'],
+            ['/../example/ivanov_crypto_2001_der.cer'],
 //            ['/../temp/official1.cer'],
 //            ['/../temp/official2.cer'],
-            ['/../temp/person1.cer'],
-            ['/../temp/person2.cer'],
+//            ['/../temp/person1.cer'],
+//            ['/../temp/person2.cer'],
 //            ['/../temp/company.cer'],
         ];
     }
