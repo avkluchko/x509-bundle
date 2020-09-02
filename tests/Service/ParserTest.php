@@ -99,15 +99,15 @@ class ParserTest extends TestCase
 
     public function testParseSNILS(): void
     {
-        self::assertEquals('12345678983', $this->parser->parseSNILS(['SNILS' => '12345678983']));
-        self::assertEquals('12345678983', $this->parser->parseSNILS(['SNILS' => '123-456-789 83']));
+        self::assertEquals('12345678964', $this->parser->parseSNILS(['SNILS' => '12345678964']));
+        self::assertEquals('12345678964', $this->parser->parseSNILS(['SNILS' => '123-456-789 64']));
 
-        self::assertEquals('12345678983', $this->parser->parseSNILS([
-            'undefined' => ['one value', '1047797019830', '1145678578', '12345678983']
+        self::assertEquals('12345678964', $this->parser->parseSNILS([
+            'undefined' => ['one value', '1047797019830', '1145678578', '12345678964']
         ]));
 
-        self::assertEquals('12345678983', $this->parser->parseSNILS([
-            'undefined' => ['one value', '164400537302', '1047797019830', '123-456-789 83']
+        self::assertEquals('12345678964', $this->parser->parseSNILS([
+            'undefined' => ['one value', '164400537302', '1047797019830', '123-456-789 64']
         ]));
 
         self::assertNull($this->parser->parseSNILS([]));
@@ -165,11 +165,11 @@ class ParserTest extends TestCase
     public function getCertificatePaths(): array
     {
         return [
-            ['/../example/ivanov_crypto_2001_base64.cer'],
-            ['/../example/ivanov_crypto_2001_der.cer'],
+//            ['/../example/ivanov_crypto_2001_base64.cer'],
+//            ['/../example/ivanov_crypto_2001_der.cer'],
 //            ['/../temp/official1.cer'],
 //            ['/../temp/official2.cer'],
-//            ['/../temp/person1.cer'],
+            ['/../temp/person1.cer'],
 //            ['/../temp/person2.cer'],
 //            ['/../temp/company.cer'],
         ];
