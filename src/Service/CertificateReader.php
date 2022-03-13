@@ -7,6 +7,9 @@ class CertificateReader
     private const BEGIN_CERTIFICATE = '-----BEGIN CERTIFICATE-----' . PHP_EOL;
     private const END_CERTIFICATE = '-----END CERTIFICATE-----' . PHP_EOL;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function loadData(string $filename, bool $shortNames = false): array
     {
         $fileContent = file_get_contents($filename);

@@ -8,14 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
+    private Parser $parser;
 
     protected function setUp(): void
     {
-        date_default_timezone_set('Europe/Moscow');
         $this->parser = new Parser(new CertificateReader());
     }
 

@@ -46,6 +46,7 @@ class Parser
     }
 
     /**
+     * @param array<string, mixed> $extensions
      * @return array<string, \DateTime>|null
      */
     public function parsePrivateKeyUsagePeriod(array $extensions): ?array
@@ -72,6 +73,7 @@ class Parser
     }
 
     /**
+     * @param array<string, mixed> $data
      * @return array<string, mixed>
      */
     private function parseSubject(array $data): array
@@ -110,6 +112,9 @@ class Parser
         ];
     }
 
+    /**
+     * @param string|array<string> $email
+     */
     public function parseEmail($email): string
     {
         if (is_array($email)) {
@@ -120,6 +125,7 @@ class Parser
     }
 
     /**
+     * @param array<string, mixed> $data
      * @return array<string, mixed>
      */
     private function parseIssuer(array $data): array
@@ -138,6 +144,9 @@ class Parser
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function parseSignTool(array $data): ?string
     {
         $signTool = $data['subjectSignTool'] ??
@@ -150,6 +159,9 @@ class Parser
         return trim($signTool, " +\x00..\x1F");
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function parseINN(array $data): ?string
     {
         // if use OpenSSL 1.1
@@ -171,6 +183,9 @@ class Parser
         return null;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function parseSNILS(array $data): ?string
     {
         $SNILS = $this->getSNILS($data);
@@ -182,6 +197,9 @@ class Parser
         return str_replace(['-', ' '], '', $SNILS);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function getSNILS(array $data): ?string
     {
         // if use OpenSSL 1.1
@@ -203,6 +221,9 @@ class Parser
         return null;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function parseOGRN(array $data): ?string
     {
         // if use OpenSSL 1.1
@@ -224,6 +245,10 @@ class Parser
         return null;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string>|null
+     */
     public function parseExtendedKeyUsage(array $data): ?array
     {
         if (!isset($data['extendedKeyUsage'])) {
