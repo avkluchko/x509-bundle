@@ -72,5 +72,3 @@ jobs:
               uses: php-actions/composer@v6
             - name: PHPUnit tests
               uses: php-actions/phpunit@v3
-              with:
-                version: "9.5.0"
