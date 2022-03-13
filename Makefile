@@ -9,7 +9,8 @@ PHP_CONT = $(DOCKER_COMP) run --rm php-fpm-gost
 # Executables
 COMPOSER = $(PHP_CONT) composer
 PHPUNIT  = $(PHP_CONT) php ./vendor/bin/simple-phpunit
-PHPCS  = $(PHP_CONT) php ./vendor/bin/phpcs
+PHPCS    = $(PHP_CONT) php ./vendor/bin/phpcs
+PHPSTAN  = $(PHP_CONT) php ./vendor/bin/phpstan
 
 ## —— The Dwelling Makefile —————————————————————————————————————————————————
 help: ## Outputs this help screen
@@ -56,3 +57,6 @@ test-all: phpunit.xml.dist ## Run all tests
 
 phpcs: phpcs.xml.dist ## Run CodeSniffer
 	@$(PHPCS)
+
+phpstan: phpstan.neon.dist ## Run PHPStan
+	@$(PHPSTAN)
