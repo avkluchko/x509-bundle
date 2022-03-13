@@ -61,8 +61,8 @@ class ParserTest extends TestCase
         self::assertNull($this->parser->parseExtendedKeyUsage([]));
 
         $result = $this->parser->parseExtendedKeyUsage([
-            'extendedKeyUsage' =>
-                'TLS Web Client Authentication, E-mail Protection, 1.2.643.2.1.6.8.5, 1.2.643.3.61.502710.1.6.3.2, 1.2.643.3.251.1.1, 1.2.643.3.251.3, 1.2.643.3.251.5.1, 1.2.643.3.251.6'
+            // @phpcs:ignore
+            'extendedKeyUsage' => 'TLS Web Client Authentication, E-mail Protection, 1.2.643.2.1.6.8.5, 1.2.643.3.61.502710.1.6.3.2, 1.2.643.3.251.1.1, 1.2.643.3.251.3, 1.2.643.3.251.5.1, 1.2.643.3.251.6'
         ]);
         self::assertIsArray($result);
         self::assertEquals('TLS Web Client Authentication', $result[0]);
