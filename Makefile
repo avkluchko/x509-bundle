@@ -55,6 +55,8 @@ test: phpunit.xml.dist check ## Run tests with optional suite and filter
 test-all: phpunit.xml.dist ## Run all tests
 	@$(PHPUNIT) --stop-on-failure
 
+lint: phpcs phpstan
+
 phpcs: phpcs.xml.dist ## Run CodeSniffer
 	@$(PHPCS)
 
