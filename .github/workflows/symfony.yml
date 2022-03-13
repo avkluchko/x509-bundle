@@ -64,4 +64,8 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - uses: php-actions/composer@v6
+              with:
+                php_version: "8.1"
             - uses: php-actions/phpunit@v3
+              with:
+                version: "9.5.0"
