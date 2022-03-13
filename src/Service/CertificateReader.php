@@ -25,7 +25,7 @@ class CertificateReader
         }
 
         if ($data === false) {
-            throw new \Exception(printf('Could not parse certificate %s, unknown format', $filename));
+            throw new \Exception(sprintf('Could not parse certificate %s, unknown format', $filename));
         }
 
         $data['fingerprint'] = openssl_x509_fingerprint($content);
