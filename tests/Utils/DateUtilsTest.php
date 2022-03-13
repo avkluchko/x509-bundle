@@ -12,7 +12,7 @@ class DateUtilsTest extends TestCase
         date_default_timezone_set('Europe/Moscow');
     }
 
-    public function testTimeToDatetime_MustReturnDatetime():void
+    public function testTimeToDatetime_MustReturnDatetime(): void
     {
         $date = DateUtils::timeToDatetime(1571133507);
         self::assertEquals('2019-10-15 12:58:27', $date->format('Y-m-d H:i:s'));

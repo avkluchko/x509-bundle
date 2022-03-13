@@ -16,5 +16,4 @@ class X509Bundle extends Bundle
 
         return $this->extension;
     }
-
 }

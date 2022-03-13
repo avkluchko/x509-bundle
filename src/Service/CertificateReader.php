@@ -40,5 +40,4 @@ class CertificateReader
             chunk_split(base64_encode($content), 64, PHP_EOL) .
             self::END_CERTIFICATE;
     }
-
 }

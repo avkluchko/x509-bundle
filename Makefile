@@ -4,11 +4,12 @@ SHELL=/bin/bash
 DOCKER_COMP = docker-compose -f docker-compose.yml
 
 # Docker containers
-PHP_CONT = $(DOCKER_COMP) exec php-fpm-gost
+PHP_CONT = $(DOCKER_COMP) run --rm php-fpm-gost
 
 # Executables
 COMPOSER = $(PHP_CONT) composer
 PHPUNIT  = $(PHP_CONT) php ./vendor/bin/simple-phpunit
+PHPCS  = $(PHP_CONT) php ./vendor/bin/phpcs
 
 ## —— The Dwelling Makefile —————————————————————————————————————————————————
 help: ## Outputs this help screen
@@ -21,19 +22,6 @@ build: ## Builds the Docker images
 
 rebuild: ## Builds the Docker images without cache
 	@$(DOCKER_COMP) build --pull --no-cache
-
-up: ## Start the docker hub in detached mode (no logs)
-	@$(DOCKER_COMP) up --detach
-
-start: build up ## Build and start the containers
-
-down: ## Stop the docker hub
-	@$(DOCKER_COMP) down --remove-orphans
-
-down-clear: ## Stop the docker hub with removing volumes
-	@$(DOCKER_COMP) down -v --remove-orphans
-
-restart: down up ## Restart the docker hub
 
 logs: ## Show live logs
 	@$(DOCKER_COMP) logs --tail=0 --follow
@@ -54,7 +42,7 @@ vendor: composer
 
 ## —— Application ———————————————————————————————————————————————————————————
 init: ## Full initialization
-init: down-clear build up vendor
+init: build vendor
 
 
 ## —— Tests —————————————————————————————————————————————————————————————————
@@ -65,3 +53,6 @@ test: phpunit.xml.dist check ## Run tests with optional suite and filter
 
 test-all: phpunit.xml.dist ## Run all tests
 	@$(PHPUNIT) --stop-on-failure
+
+phpcs: phpcs.xml.dist ## Run CodeSniffer
+	@$(PHPCS)

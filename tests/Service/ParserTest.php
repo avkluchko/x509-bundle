@@ -39,15 +39,21 @@ class ParserTest extends TestCase
     {
         self::assertNull($this->parser->parseSignTool([]));
 
-        self::assertEquals('"КриптоПро CSP" (версия 4.0)', $this->parser->parseSignTool([
-            'subjectSignTool' => '
+        self::assertEquals(
+            '"КриптоПро CSP" (версия 4.0)',
+            $this->parser->parseSignTool([
+                'subjectSignTool' => '
                        "КриптоПро CSP" (версия 4.0)'
-        ]));
+            ])
+        );
 
-        self::assertEquals('"КриптоПро CSP"', $this->parser->parseSignTool([
-            '1.2.643.100.111' => '
+        self::assertEquals(
+            '"КриптоПро CSP"',
+            $this->parser->parseSignTool([
+                '1.2.643.100.111' => '
                                  "КриптоПро CSP"'
-        ]));
+            ])
+        );
     }
 
     public function testParseExtendedKeyUsage(): void
@@ -55,7 +61,8 @@ class ParserTest extends TestCase
         self::assertNull($this->parser->parseExtendedKeyUsage([]));
 
         $result = $this->parser->parseExtendedKeyUsage([
-            'extendedKeyUsage' => 'TLS Web Client Authentication, E-mail Protection, 1.2.643.2.1.6.8.5, 1.2.643.3.61.502710.1.6.3.2, 1.2.643.3.251.1.1, 1.2.643.3.251.3, 1.2.643.3.251.5.1, 1.2.643.3.251.6'
+            'extendedKeyUsage' =>
+                'TLS Web Client Authentication, E-mail Protection, 1.2.643.2.1.6.8.5, 1.2.643.3.61.502710.1.6.3.2, 1.2.643.3.251.1.1, 1.2.643.3.251.3, 1.2.643.3.251.5.1, 1.2.643.3.251.6'
         ]);
         self::assertIsArray($result);
         self::assertEquals('TLS Web Client Authentication', $result[0]);
@@ -72,9 +79,12 @@ class ParserTest extends TestCase
     {
         self::assertEquals('1047797019830', $this->parser->parseOGRN(['OGRN' => '1047797019830']));
 
-        self::assertEquals('1047797019830', $this->parser->parseOGRN([
-            'undefined' => ['one value', '12345678983', '164400537302', '1047797019830', '1145678578']
-        ]));
+        self::assertEquals(
+            '1047797019830',
+            $this->parser->parseOGRN([
+                'undefined' => ['one value', '12345678983', '164400537302', '1047797019830', '1145678578']
+            ])
+        );
 
         self::assertNull($this->parser->parseOGRN([]));
         self::assertNull($this->parser->parseOGRN(['undefined' => ['one value', '1145678578', '12345678983']]));
@@ -85,13 +95,19 @@ class ParserTest extends TestCase
         self::assertEquals('1145678578', $this->parser->parseINN(['INN' => '1145678578']));
         self::assertEquals('164400537302', $this->parser->parseINN(['INN' => '164400537302']));
 
-        self::assertEquals('1145678578', $this->parser->parseINN([
-            'undefined' => ['one value', '1047797019830', '1145678578']
-        ]));
+        self::assertEquals(
+            '1145678578',
+            $this->parser->parseINN([
+                'undefined' => ['one value', '1047797019830', '1145678578']
+            ])
+        );
 
-        self::assertEquals('164400537302', $this->parser->parseINN([
-            'undefined' => ['one value', '12345678983', '164400537302', '1047797019830']
-        ]));
+        self::assertEquals(
+            '164400537302',
+            $this->parser->parseINN([
+                'undefined' => ['one value', '12345678983', '164400537302', '1047797019830']
+            ])
+        );
 
         self::assertNull($this->parser->parseINN([]));
         self::assertNull($this->parser->parseINN(['undefined' => ['one value', '12345678983', '1047797019830']]));
@@ -102,13 +118,19 @@ class ParserTest extends TestCase
         self::assertEquals('12345678964', $this->parser->parseSNILS(['SNILS' => '12345678964']));
         self::assertEquals('12345678964', $this->parser->parseSNILS(['SNILS' => '123-456-789 64']));
 
-        self::assertEquals('12345678964', $this->parser->parseSNILS([
-            'undefined' => ['one value', '1047797019830', '1145678578', '12345678964']
-        ]));
+        self::assertEquals(
+            '12345678964',
+            $this->parser->parseSNILS([
+                'undefined' => ['one value', '1047797019830', '1145678578', '12345678964']
+            ])
+        );
 
-        self::assertEquals('12345678964', $this->parser->parseSNILS([
-            'undefined' => ['one value', '164400537302', '1047797019830', '123-456-789 64']
-        ]));
+        self::assertEquals(
+            '12345678964',
+            $this->parser->parseSNILS([
+                'undefined' => ['one value', '164400537302', '1047797019830', '123-456-789 64']
+            ])
+        );
 
         self::assertNull($this->parser->parseSNILS([]));
         self::assertNull($this->parser->parseSNILS(['undefined' => ['one value', '164400537302', '1047797019830']]));
