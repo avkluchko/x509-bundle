@@ -13,6 +13,9 @@ class Parser
     public const SUBJECT_OFFICIAL = 'official';
     public const SUBJECT_PERSON = 'person';
 
+    /**
+     * @var CertificateReader
+     */
     private $reader;
 
     public function __construct(CertificateReader $reader)
@@ -20,6 +23,9 @@ class Parser
         $this->reader = $reader;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function parse(string $filename): array
     {
         $data = $this->reader->loadData($filename);
@@ -39,6 +45,9 @@ class Parser
         ];
     }
 
+    /**
+     * @return array<string, \DateTime>|null
+     */
     public function parsePrivateKeyUsagePeriod(array $extensions): ?array
     {
         if (!isset($extensions['privateKeyUsagePeriod'])) {
@@ -62,6 +71,9 @@ class Parser
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function parseSubject(array $data): array
     {
         $OGRN = $this->parseOGRN($data);
@@ -107,6 +119,9 @@ class Parser
         return $email;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function parseIssuer(array $data): array
     {
         return [

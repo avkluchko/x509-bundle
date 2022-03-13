@@ -13,17 +13,26 @@ class X509TestingKernel extends Kernel
         parent::__construct('test', true);
     }
 
-    public function registerBundles(): array
+    /**
+     * @inheritDoc
+     */
+    public function registerBundles()
     {
         return [
             new X509Bundle(),
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCacheDir(): string
     {
         return __DIR__ . '/cache/' . spl_object_hash($this);

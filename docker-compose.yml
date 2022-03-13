@@ -1,15 +1,19 @@
-version: '3.7'
+version: '3.4'
 
 services:
-    php-fpm-gost:
+    php:
         build:
-            context: ./docker
-            dockerfile: php-fpm-gost.docker
+            context: .
+            target: php
         environment:
             COMPOSER_MEMORY_LIMIT: -1
         volumes:
-            - ./:/app:delegated
+            # The "cached" option has no effect on Linux but improves performance on Mac
+            - ./:/app:rw,cached
             - composer:/root/.composer/cache
+            # If you develop on Mac you can remove the var/ directory from the bind-mount
+            # for better performance by enabling the next line
+            - /app/var/cache
 
 volumes:
     composer:

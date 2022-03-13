@@ -9,7 +9,7 @@ Services for work with x509 certificate.
 
 ## Requirements
 
-The minumum requirement by X509 Bundle is that your web-server supports PHP 7.1 or above. 
+The minumum requirement by X509 Bundle is that your web-server supports PHP 7.4 or above. 
 
 **Warning!** Need installed openssl php extension.
 

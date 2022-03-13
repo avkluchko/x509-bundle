@@ -4,7 +4,7 @@ SHELL=/bin/bash
 DOCKER_COMP = docker-compose -f docker-compose.yml
 
 # Docker containers
-PHP_CONT = $(DOCKER_COMP) run --rm php-fpm-gost
+PHP_CONT = $(DOCKER_COMP) run --rm php
 
 # Executables
 COMPOSER = $(PHP_CONT) composer

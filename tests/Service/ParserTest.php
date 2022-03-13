@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
 {
+    /**
+     * @var Parser
+     */
     private $parser;
 
     protected function setUp(): void
@@ -184,6 +187,9 @@ class ParserTest extends TestCase
         self::assertArrayHasKey('INN', $data['issuer']);
     }
 
+    /**
+     * @return array<array<string>>
+     */
     public function getCertificatePaths(): array
     {
         return [

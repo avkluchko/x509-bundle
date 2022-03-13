@@ -9,7 +9,10 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class X509Extension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    /**
+     * @inheritDoc
+     */
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');

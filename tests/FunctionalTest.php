@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class FunctionalTest extends TestCase
 {
-    public function testServiceWiring()
+    public function testServiceWiring(): void
     {
         $kernel = new X509TestingKernel();
         $kernel->boot();

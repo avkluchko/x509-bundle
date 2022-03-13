@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class CertificateReaderTest extends TestCase
 {
+    /**
+     * @var CertificateReader
+     */
     private $reader;
 
     public function setUp(): void
