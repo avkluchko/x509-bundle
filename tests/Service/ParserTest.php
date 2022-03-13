@@ -12,6 +12,7 @@ class ParserTest extends TestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('Europe/Moscow');
         $this->parser = new Parser(new CertificateReader());
     }
 
